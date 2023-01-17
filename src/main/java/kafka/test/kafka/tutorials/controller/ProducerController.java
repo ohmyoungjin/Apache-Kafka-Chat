@@ -8,10 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -52,5 +49,27 @@ public class ProducerController {
 
         return ResponseEntity.ok(messageEntity);
 
+    }
+
+    @PostMapping("produce-with-key/{key}")
+    public ResponseEntity<?> produceMessageWithKey(@PathVariable("key") String key, @RequestBody MessageEntity messageEntity){
+
+        log.info("key = {}, testEntity = {}", key, messageEntity);
+        // 키를 함께 전달하여 키에 의한 파티셔닝을 수행하도록 전달.
+        ListenableFuture<SendResult<String, Object>> future = kafkaProducerTemplate.send(messageEntity.getTopicName(), key, messageEntity);
+
+        future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                log.error("메세지를 보낼 수 없습니다: {}", ex.getMessage());
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, Object> result) {
+                log.info("키와 함께 보낸 메세지: {}, offset: {}, partition: {}", key, result.getRecordMetadata().offset(), result.getRecordMetadata().partition());
+            }
+        });
+
+        return ResponseEntity.ok(messageEntity);
     }
 }

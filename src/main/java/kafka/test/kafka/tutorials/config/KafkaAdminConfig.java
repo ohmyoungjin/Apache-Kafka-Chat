@@ -9,6 +9,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import java.util.HashMap;
 import java.util.Map;
 
+//topic 생성에 필요한 KafkaAdmin 설정해주기 위한 file
 @Configuration
 public class KafkaAdminConfig {
 

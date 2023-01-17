@@ -29,11 +29,14 @@ public class KafkaMakeTopic {
      * @param topicName
      */
     @PostMapping("/makeTopic")
-    private void makeTopic (@RequestParam("topicName") String topicName) {
+    private void makeTopic (@RequestParam("topicName") String topicName,
+                            @RequestParam("partition") Integer partition) {
         System.out.println("makeTopic >>> ");
         NewTopic newTopic = TopicBuilder.name(topicName)
+                .partitions(partition) //파티션 수 설정
+//                .replicas(2) 파티션 복제 계수 설정
                 .build();
         kafkaAdmin.createOrModifyTopics(newTopic);
-        log.info("create topic complete");
+        log.info("create topic complete={}", topicName);
     }
 }

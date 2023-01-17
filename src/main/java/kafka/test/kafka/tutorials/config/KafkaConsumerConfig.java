@@ -39,10 +39,21 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> defaultKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>(); //kafka cluster로 부터 메세지를 읽을 수 있도록 지정
         factory.setConsumerFactory(consumerFactory("defaultGroup"));
-        factory.setConcurrency(1);
-        factory.setAutoStartup(true);
+        factory.setConcurrency(1); // 동시에 읽을 컨슈머의 개수 지정
+        factory.setAutoStartup(true); //메세지 리스너 자동 실행 여부
         return factory;
+    }
+
+    /**
+     * 수동 컨슈머를 작성한다.
+     * 기존과 다른것은 Consumer 객체를 반환하는 것이다.
+     * @return 컨슈머를 반환합니다.
+     */
+    @Bean
+    public Consumer<String, Object> manualConsumer() {
+        System.out.println("KafkaConsumerConfig.manualConsumer>>>>>>>>");
+        return consumerFactory("defaultGroup").createConsumer();
     }
 }
