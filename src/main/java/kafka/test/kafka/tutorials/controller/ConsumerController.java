@@ -18,7 +18,13 @@ public class ConsumerController {
         this.manualConsumerService = manualConsumerService;
     }
 
-    //구독하고자 하는 consumer 설정
+    /**
+     * 전달 받은 메세지 출력
+     * @param partition 파티션 숫자
+     * @param offset 읽고 싶은 내용부터 하위 내용
+     * @param topicName topic 이름
+     * @return
+     */
     @PostMapping("/consume")
     public ResponseEntity<?> getMessage(
             @RequestParam(value = "partition", required = false, defaultValue = "0") Integer partition,

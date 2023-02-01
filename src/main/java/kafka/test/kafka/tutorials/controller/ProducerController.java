@@ -35,17 +35,17 @@ public class ProducerController {
         ListenableFuture<SendResult<String, Object>> future = kafkaProducerTemplate.send(messageEntity.getTopicName(), messageEntity);
 
         // 메시지 처리는 비동기로 처리한다. 그러므로 callback을 지정했다.
-        future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                log.error("Fail to send message to broker: {}", ex.getMessage());
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, Object> result) {
-                log.info("Send message with offset: {}, partition: {}", result.getRecordMetadata().offset(), result.getRecordMetadata().partition());
-            }
-        });
+//        future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+//            @Override
+//            public void onFailure(Throwable ex) {
+//                log.error("Fail to send message to broker: {}", ex.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(SendResult<String, Object> result) {
+//                log.info("Send message with offset: {}, partition: {}", result.getRecordMetadata().offset(), result.getRecordMetadata().partition());
+//            }
+//        });
 
         return ResponseEntity.ok(messageEntity);
 

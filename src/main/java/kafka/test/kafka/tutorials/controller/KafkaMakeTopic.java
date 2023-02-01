@@ -26,7 +26,8 @@ public class KafkaMakeTopic {
 
     /**
      * topic 생성 api
-     * @param topicName
+     * @param topicName 토픽 이름
+     * @param partition 파티션 수
      */
     @PostMapping("/makeTopic")
     private void makeTopic (@RequestParam("topicName") String topicName,

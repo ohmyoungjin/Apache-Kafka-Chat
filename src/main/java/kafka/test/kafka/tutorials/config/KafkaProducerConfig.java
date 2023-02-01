@@ -16,8 +16,7 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-//    @Value("${kafka.bootstrap-servers}")
-    @Value("${kafka.server}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServer;
 
     private ProducerFactory<String, Object> producerFactory() {
@@ -25,12 +24,13 @@ public class KafkaProducerConfig {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-
+        configProps.put("partitioner.class", "kafka.test.kafka.tutorials.config.CustomPartitioner");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     @Bean
     public KafkaTemplate<String, Object> kafkaProducerTemplate() {
+        System.out.println("호출이 계속 됩니까?kafkaTemplate");
         return new KafkaTemplate<>(producerFactory());
     }
 }

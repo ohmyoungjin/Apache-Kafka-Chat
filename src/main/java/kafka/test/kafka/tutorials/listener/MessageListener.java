@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 public class MessageListener {
 
     //kafkaConsumerConfig 에서 설정 한 defaultKafkaListenerContainerFactory 통해 이벤트 감지
-    //@KafkaListener(topics = "hello", containerFactory = "defaultKafkaListenerContainerFactory")
-    @KafkaListener(topics = "hello", containerFactory = "defaultKafkaListenerContainerFactory")
+    @KafkaListener(topics = "room", containerFactory = "defaultKafkaListenerContainerFactory")
     public void listenDefaultTopic(Object record) {
         log.info("Receive Message from {}, values {}", "hello", record);
 

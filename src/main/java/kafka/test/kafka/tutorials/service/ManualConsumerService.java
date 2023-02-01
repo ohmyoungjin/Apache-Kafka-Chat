@@ -21,6 +21,7 @@ public class ManualConsumerService {
 
     public ManualConsumerService(Consumer<String, Object> manualConsumer) {
         this.manualConsumer = manualConsumer;
+        System.out.println("ManualConsumerService.ManualConsumerService >>>>>> ");
     }
 
     public List<Object> receiveMessages(String topicName, int partition, int offset) {
@@ -31,7 +32,7 @@ public class ManualConsumerService {
         manualConsumer.seek(topicPartition, offset);
 
         System.out.println("ManualConsumerService.receiveMessages222222222>>>>>");
-        ConsumerRecords<String, Object> records = manualConsumer.poll(Duration.ofMillis(1000));
+        ConsumerRecords<String, Object> records = manualConsumer.poll(Duration.ofMillis(500));
 
         System.out.println("ManualConsumerService.receiveMessages33333333333333>>>>>");
         for (ConsumerRecord<String, Object> record: records) {
