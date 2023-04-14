@@ -27,7 +27,6 @@ public class ProducerController {
     @PostMapping("/produce")
     public ResponseEntity<?> produceMessage(@RequestBody MessageEntity messageEntity) {
         log.info("messageEntity={}", messageEntity);
-        messageEntity.setTime(LocalDateTime.now());
 
         // kafkaProducerTemplate.send를 이용하여 메시지를 전송한다.
         // 이때 토픽을 지정하고, 메시지를 전송하면 된다.

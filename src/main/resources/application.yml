@@ -21,4 +21,6 @@ spring:
 
 kafka:
   server: localhost:9092
+server:
+  port: 8083
 

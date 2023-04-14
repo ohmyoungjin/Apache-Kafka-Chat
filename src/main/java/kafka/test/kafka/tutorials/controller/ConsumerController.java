@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @Slf4j
-@RequestMapping("/api/consumer")
+@RequestMapping("/kafka/consumer")
 public class ConsumerController {
 
     private final ManualConsumerService manualConsumerService;
@@ -29,9 +31,23 @@ public class ConsumerController {
     public ResponseEntity<?> getMessage(
             @RequestParam(value = "partition", required = false, defaultValue = "0") Integer partition,
             @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
-            @RequestParam("topicName") String topicName) {
+            @RequestParam("topicName") String topicName,
+            @RequestParam("keyWord") String keyWord) {
         log.info("/consume param partition={}, offset={}, topicName={}", partition, offset, topicName);
-        return ResponseEntity.ok(manualConsumerService.receiveMessages(topicName, partition, offset));
+        return ResponseEntity.ok(manualConsumerService.receiveMessages(topicName, partition, offset, keyWord));
+
+    }
+
+    @PostMapping("/consume/keyword")
+    public ResponseEntity<?> getMessage_keyword(
+            @RequestParam(value = "partition", required = false, defaultValue = "0") Integer partition,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+            @RequestBody Map<String, Object> requestForm
+            ) {
+        String topicName = (String) requestForm.get("topicName");
+        String keyWord = (String) requestForm.get("keyWord");
+        log.info("/consume param partition={}, offset={}, topicName={}, keyWord={}", partition, offset, topicName, keyWord);
+        return ResponseEntity.ok(manualConsumerService.receiveMessages_keyword(topicName, partition, offset, keyWord));
 
     }
 }
